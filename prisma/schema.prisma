@@ -1,0 +1,146 @@
+// prisma/schema.prisma
+// ใช้ String แทน enum เพื่อให้ย้ายไป PostgreSQL ได้ง่าย
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ===== ผู้ใช้ =====
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("CUSTOMER") // "CUSTOMER" | "ADMIN"
+  phone        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  addresses    Address[]
+  orders       Order[]
+  consentLogs  ConsentLog[]
+
+  @@index([email])
+  @@index([role])
+}
+
+// ===== หมวดหมู่สินค้า =====
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products Product[]
+
+  @@index([slug])
+}
+
+// ===== สินค้า =====
+model Product {
+  id                String   @id @default(cuid())
+  name              String
+  slug              String   @unique
+  description       String
+  price             Int      // เก็บเป็นสตางค์ (หน่วยเล็กสุด) เช่น 15000 = 150.00 บาท
+  imageUrl          String
+  categoryId        String
+  stock             Int      @default(0)
+  lowStockThreshold Int      @default(5)
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  category   Category    @relation(fields: [categoryId], references: [id])
+  orderItems OrderItem[]
+
+  @@index([slug])
+  @@index([categoryId])
+  @@index([isActive])
+}
+
+// ===== ที่อยู่จัดส่ง =====
+model Address {
+  id            String   @id @default(cuid())
+  userId        String
+  recipientName String
+  phone         String
+  line1         String
+  subdistrict   String   // ตำบล/แขวง
+  district      String   // อำเภอ/เขต
+  province      String   // จังหวัด
+  postalCode    String
+  isDefault     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ===== คำสั่งซื้อ =====
+model Order {
+  id                      String   @id @default(cuid())
+  orderNumber             String   @unique // เช่น AV-20260101-0001
+  userId                  String
+  status                  String   @default("PENDING_PAYMENT") // ดู order-status.ts
+  subtotal                Int      // สตางค์
+  shippingFee             Int      @default(0)
+  total                   Int      // สตางค์
+  shippingAddressSnapshot String   // JSON string ของที่อยู่ ณ ตอนสั่ง
+  note                    String?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  user  User        @relation(fields: [userId], references: [id])
+  items OrderItem[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([orderNumber])
+}
+
+// ===== รายการสินค้าในคำสั่งซื้อ =====
+model OrderItem {
+  id                  String @id @default(cuid())
+  orderId             String
+  productId           String
+  productNameSnapshot String   // ชื่อสินค้า ณ ตอนสั่ง
+  unitPriceSnapshot   Int      // ราคาต่อชิ้น ณ ตอนสั่ง (สตางค์)
+  quantity            Int
+  lineTotal           Int      // unitPriceSnapshot * quantity (สตางค์)
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+// ===== บันทึกความยินยอมคุกกี้ (PDPA) =====
+// append-only: ห้ามแก้ไข/ลบ
+model ConsentLog {
+  id            String   @id @default(cuid())
+  userId        String?
+  anonymousId   String   // UUID จาก browser
+  policyVersion String
+  action        String   // "ACCEPT_ALL" | "REJECT_ALL" | "CUSTOM" | "WITHDRAW" | "UPDATE"
+  analytics     Boolean  @default(false)
+  functional    Boolean  @default(false)
+  marketing     Boolean  @default(false)
+  userAgent     String?
+  hashedIp      String?  // IP แบบ hash เพื่อลดการเก็บข้อมูลส่วนบุคคล
+  createdAt     DateTime @default(now())
+
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([anonymousId])
+  @@index([userId])
+}
