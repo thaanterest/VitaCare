@@ -225,34 +225,61 @@ export default function Header() {
 
       {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <nav
-          className="border-t border-primary-100 bg-white px-4 py-3 md:hidden"
+        <div
+          className="border-t border-gray-100 bg-white/95 backdrop-blur-md px-4 py-4 md:hidden shadow-lg animate-in slide-in-from-top-2 duration-200"
           aria-label="เมนูมือถือ"
         >
-          <Link
-            href="/"
-            className="block rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-primary-50"
-            onClick={() => setIsMobileMenuOpen(false)}
+          {/* Mobile Search */}
+          <form
+            action="/products"
+            method="GET"
+            onSubmit={() => setIsMobileMenuOpen(false)}
+            className="relative mb-3 w-full"
           >
-            หน้าแรก
-          </Link>
-          <Link
-            href="/products"
-            className="block rounded-lg px-3 py-2 text-sm font-medium text-gray-600 hover:bg-primary-50"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            สินค้าทั้งหมด
-          </Link>
-          {isAdmin && (
+            <input
+              type="text"
+              name="search"
+              placeholder="ค้นหาวิตามิน, อาหารเสริม..."
+              className="w-full rounded-xl border border-gray-200 bg-gray-50 py-2 pl-9 pr-4 text-xs text-gray-800 placeholder-gray-400 focus:border-emerald-500 focus:bg-white focus:outline-none"
+            />
+            <svg className="absolute left-3 top-2.5 h-3.5 w-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+          </form>
+
+          <nav className="space-y-1">
             <Link
-              href="/admin"
-              className="block rounded-lg px-3 py-2 text-sm font-medium text-amber-700 hover:bg-amber-50"
+              href="/"
+              className="flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              จัดการระบบ
+              หน้าแรก
             </Link>
-          )}
-        </nav>
+            <Link
+              href="/products"
+              className="flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              หมวดหมู่สินค้า
+            </Link>
+            <Link
+              href="/cookie-policy"
+              className="flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              นโยบาย
+            </Link>
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className="flex items-center rounded-xl px-3 py-2.5 text-sm font-semibold text-amber-700 bg-amber-50/60 hover:bg-amber-100 transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                จัดการระบบ (Admin)
+              </Link>
+            )}
+          </nav>
+        </div>
       )}
     </header>
   );

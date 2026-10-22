@@ -50,14 +50,14 @@ export default async function ProductsPage({
       </div>
 
       {/* Main Layout: Sidebar on Left, Products on Right */}
-      <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
+      <div className="flex flex-col gap-6 lg:gap-8 lg:flex-row lg:items-start">
         {/* Left Sidebar */}
         <ProductFilters categories={categories} />
 
         {/* Right Product Grid */}
         <div className="flex-1">
           {products.length === 0 ? (
-            <div className="rounded-2xl border border-gray-100 bg-white p-16 text-center shadow-sm">
+            <div className="rounded-2xl border border-gray-100 bg-white p-12 sm:p-16 text-center shadow-sm">
               <div className="mx-auto mb-4 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
                 <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -67,7 +67,7 @@ export default async function ProductsPage({
               <p className="mt-1 text-xs text-gray-500">ลองล้างตัวกรอง หรือค้นหาด้วยคำใหม่อีกครั้ง</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:gap-5">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-3 xl:gap-5">
               {products.map((product, idx) => (
                 <ProductCard
                   key={product.id}

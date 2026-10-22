@@ -85,28 +85,28 @@ export default async function HomePage() {
   return (
     <div className="space-y-12 pb-16">
       {/* 1. Hero Banner */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#eff6ff] via-[#e0f2fe] to-[#cfe6fc] py-8 md:py-12">
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#eff6ff] via-[#e0f2fe] to-[#cfe6fc] py-8 sm:py-10 md:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
             {/* Left Content */}
-            <div className="lg:col-span-7 space-y-5">
+            <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 rounded-full bg-blue-100/80 px-3.5 py-1 text-xs font-semibold text-blue-800">
                 <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
                 วิตามินและอาหารเสริมมาตรฐานสากล
               </div>
-              <h1 className="text-3xl font-black tracking-tight text-blue-950 sm:text-5xl lg:text-6xl leading-[1.15]">
+              <h1 className="text-2xl xs:text-3xl font-black tracking-tight text-blue-950 sm:text-4xl md:text-5xl lg:text-6xl leading-[1.2]">
                 ดูแลสุขภาพวันนี้
                 <br />
                 <span className="text-blue-600">เพื่อคุณในอนาคต</span>
               </h1>
-              <p className="max-w-lg text-sm sm:text-base text-gray-600 leading-relaxed">
+              <p className="mx-auto lg:mx-0 max-w-lg text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed">
                 วิตามินและอาหารเสริมคุณภาพดี เพื่อสุขภาพที่แข็งแรงในทุกๆ วัน
                 คัดสรรสูตรเข้มข้น ปลอดภัย ส่งตรงถึงมือคุณอย่างรวดเร็ว
               </p>
-              <div className="pt-2">
+              <div className="pt-2 flex justify-center lg:justify-start">
                 <Link
                   href="/products"
-                  className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3 text-sm font-bold text-white shadow-md shadow-blue-600/25 transition-all hover:bg-blue-700 hover:shadow-lg active:scale-95"
+                  className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 sm:px-7 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white shadow-md shadow-blue-600/25 transition-all hover:bg-blue-700 hover:shadow-lg active:scale-95"
                 >
                   <span>ช้อปเลย</span>
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor">
@@ -118,7 +118,7 @@ export default async function HomePage() {
 
             {/* Right Hero Image */}
             <div className="lg:col-span-5 flex justify-center lg:justify-end">
-              <div className="relative h-72 w-72 sm:h-88 sm:w-88 md:h-96 md:w-96 overflow-hidden rounded-3xl shadow-xl border-4 border-white">
+              <div className="relative h-60 w-60 sm:h-80 sm:w-80 md:h-96 md:w-96 overflow-hidden rounded-3xl shadow-xl border-4 border-white">
                 <Image
                   src="/hero-banner.jpg"
                   alt="VitaCare Supplements"
@@ -139,10 +139,10 @@ export default async function HomePage() {
             <Link
               key={cat.slug}
               href={`/products?category=${cat.slug}`}
-              className="group flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-md"
+              className="group flex flex-col items-center justify-center rounded-2xl border border-gray-100 bg-white p-3.5 sm:p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-md"
             >
               <div
-                className={`mb-3 flex h-14 w-14 items-center justify-center rounded-2xl border ${cat.bg} shadow-sm transition-transform duration-200 group-hover:scale-105`}
+                className={`mb-2.5 sm:mb-3 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-2xl border ${cat.bg} shadow-sm transition-transform duration-200 group-hover:scale-105`}
               >
                 {cat.icon}
               </div>
